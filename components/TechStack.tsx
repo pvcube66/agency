@@ -173,6 +173,53 @@ function useTypewriter(text: string, speed: number = 50, startDelay: number = 0)
   return { displayText, isComplete, ref }
 }
 
+// Starfield component - Animated twinkling stars
+function Starfield() {
+  const [mounted, setMounted] = useState(false)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const stars = Array.from({ length: 60 }, (_, i) => ({
+    id: i,
+    x: ((i * 17) % 100),
+    y: ((i * 31) % 100),
+    size: ((i % 3) + 1.5),
+    delay: ((i * 0.2) % 3),
+    duration: ((i % 3) + 2.5),
+  }))
+  
+  if (!mounted) return null
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {stars.map((star) => (
+        <motion.div
+          key={star.id}
+          className="absolute rounded-full bg-white"
+          style={{
+            left: `${star.x}%`,
+            top: `${star.y}%`,
+            width: star.size,
+            height: star.size,
+          }}
+          animate={{
+            opacity: [0.2, 1, 0.2],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: star.duration,
+            delay: star.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
 // Tech logo card component
 const TechLogo = memo(function TechLogo({ name, category, index }: { name: string; category: string; index: number }) {
   return (
@@ -308,6 +355,9 @@ const subtitleLines = [
 
           {/* RIGHT COLUMN - Tech Logos */}
           <div className="relative">
+            {/* Starfield Background - Animated twinkling stars */}
+            <Starfield />
+            
             <div className="relative z-10 space-y-4 sm:space-y-6">
               {techRows.map((row, rowIndex) => (
                 <div key={rowIndex} className="flex justify-center gap-3 sm:gap-4 md:gap-6">
