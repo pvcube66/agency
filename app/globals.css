@@ -43,11 +43,40 @@
   * {
     @apply border-border;
   }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
   body {
     @apply bg-background text-foreground font-body antialiased selection:bg-white/20 selection:text-white;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+  
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
+  }
+
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* Better touch scrolling on mobile */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Reduce animations for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
@@ -62,5 +91,22 @@
   }
   .animate-spin-slow {
     animation: spin-slow 8s linear infinite;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Safe area insets for mobile devices */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }

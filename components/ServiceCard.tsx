@@ -13,13 +13,13 @@ export function ServiceCard({ service, index }: { service: Service; index: numbe
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="p-8 border border-white/10 hover:border-white/30 transition-colors bg-white/[0.02] hover:bg-white/[0.05] group"
+      className="p-5 sm:p-6 md:p-8 border border-white/10 hover:border-white/30 transition-colors bg-white/[0.02] hover:bg-white/[0.05] group rounded-xl sm:rounded-none"
     >
-      <div className="mb-6 text-white/40 group-hover:text-white transition-colors">
-        <Icon size={40} strokeWidth={1} />
+      <div className="mb-4 sm:mb-6 text-white/40 group-hover:text-white transition-colors">
+        <Icon size={32} strokeWidth={1} />
       </div>
-      <h3 className="text-2xl font-display text-white mb-4">{service.title}</h3>
-      <p className="text-muted-foreground font-light leading-relaxed">
+      <h3 className="text-xl sm:text-2xl font-display text-white mb-2 sm:mb-4">{service.title}</h3>
+      <p className="text-muted-foreground font-light leading-relaxed text-sm sm:text-base">
         {service.description}
       </p>
     </motion.div>

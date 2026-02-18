@@ -15,9 +15,20 @@ export function Navigation() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
     }
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isMobileOpen])
 
   const navLinks = [
     { name: "Work", href: "/#work" },
@@ -29,18 +40,18 @@ export function Navigation() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background/80 backdrop-blur-md border-b border-white/5 py-4" : "bg-transparent py-6"
+        isScrolled ? "bg-background/95 backdrop-blur-md border-b border-white/5 py-3 sm:py-4" : "bg-transparent py-4 sm:py-6"
       }`}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link href="/">
-          <span className="text-2xl font-display font-bold text-white tracking-tighter cursor-pointer">
+      <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
+        <Link href="/" className="shrink-0">
+          <span className="text-xl sm:text-2xl font-display font-bold text-white tracking-tighter cursor-pointer">
             Dev Mama
           </span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -52,7 +63,7 @@ export function Navigation() {
             </a>
           ))}
           <Link href="/contact">
-            <button className="px-6 py-2 bg-white text-black text-sm font-bold hover:bg-white/90 transition-colors">
+            <button className="px-5 lg:px-6 py-2 bg-white text-black text-sm font-bold hover:bg-white/90 transition-colors rounded-full">
               Let&apos;s Talk
             </button>
           </Link>
@@ -60,8 +71,9 @@ export function Navigation() {
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden text-white"
+          className="md:hidden text-white p-2 -mr-2"
           onClick={() => setIsMobileOpen(!isMobileOpen)}
+          aria-label="Toggle menu"
         >
           {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -71,22 +83,28 @@ export function Navigation() {
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-background border-b border-white/10 p-6 md:hidden"
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-0 right-0 bg-background/98 backdrop-blur-lg border-b border-white/10 p-4 sm:p-6 md:hidden min-h-[50vh]"
           >
-            <nav className="flex flex-col space-y-4">
+            <nav className="flex flex-col space-y-1">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-lg font-medium text-white/70 hover:text-white"
+                  className="text-lg font-medium text-white/70 hover:text-white py-3 border-b border-white/5 last:border-0"
                   onClick={() => setIsMobileOpen(false)}
                 >
                   {link.name}
                 </a>
               ))}
+              <Link href="/contact" onClick={() => setIsMobileOpen(false)}>
+                <button className="w-full mt-4 px-6 py-3 bg-white text-black text-base font-bold hover:bg-white/90 transition-colors rounded-full">
+                  Let&apos;s Talk
+                </button>
+              </Link>
             </nav>
           </motion.div>
         )}
