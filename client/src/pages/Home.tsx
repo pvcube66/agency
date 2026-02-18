@@ -79,32 +79,58 @@ export default function Home() {
         {/* ABOUT / PROCESS SECTION */}
         <section id="about" className="py-32 container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-white/10 to-transparent opacity-50 blur-2xl" />
-                <img 
-                  src={devMamaImg} 
-                  alt="Creative Process" 
-                  className="w-full relative z-10 grayscale hover:grayscale-0 transition-all duration-700"
-                />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4">
+                <div className="bg-[#111] aspect-square rounded-2xl flex items-center justify-center p-8 border border-white/5">
+                  <div className="text-center">
+                    <div className="text-4xl font-display mb-2">120+</div>
+                    <div className="text-xs uppercase tracking-widest text-white/40">Projects Done</div>
+                  </div>
+                </div>
+                <div className="bg-white aspect-[4/5] rounded-2xl p-6 flex flex-col justify-between">
+                  <div className="text-black/40 text-xs uppercase tracking-widest">Digital Experience</div>
+                  <div className="text-black text-2xl font-display leading-tight">Expert Freelance Designer</div>
+                </div>
+              </div>
+              <div className="pt-12 space-y-4">
+                <div className="bg-[#1a1a1a] aspect-[3/4] rounded-2xl overflow-hidden relative group">
+                  <img 
+                    src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80" 
+                    alt="Work" 
+                    className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                </div>
+                <div className="bg-[#0a0a0a] aspect-square rounded-2xl border border-white/5 flex items-center justify-center">
+                   <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center animate-spin-slow">
+                     <div className="w-2 h-2 bg-white rounded-full" />
+                   </div>
+                </div>
               </div>
             </div>
             
             <div>
               <span className="text-sm uppercase tracking-widest text-white/40 mb-4 block">Our Approach</span>
-              <h2 className="text-4xl md:text-5xl font-display mb-8">
-                Designed for Impact
+              <h2 className="text-4xl md:text-5xl font-display mb-8 leading-tight">
+                Design that speaks, <br /> Defining that connects.
               </h2>
-              <div className="space-y-8">
+              <p className="text-muted-foreground mb-12 max-w-md font-light">
+                We don't just build websites; we create digital identities that resonate with your audience and drive measurable results.
+              </p>
+              <div className="space-y-6">
                 {[
-                  { title: "01. Discovery", desc: "We dive deep into your business goals and audience needs." },
-                  { title: "02. Strategy", desc: "Planning the user journey and technical architecture." },
-                  { title: "03. Design", desc: "Crafting beautiful, functional interfaces." },
-                  { title: "04. Development", desc: "Bringing designs to life with clean, performant code." },
+                  { title: "Discovery First", desc: "Understanding your vision, goals, and market positioning." },
+                  { title: "Mobile-First Design", desc: "Ensuring a seamless experience across all modern devices." },
+                  { title: "Pixel-Perfect Development", desc: "Clean, performant code that brings designs to life." },
                 ].map((step, idx) => (
-                  <div key={idx} className="border-l border-white/10 pl-6 py-2 group cursor-pointer hover:border-white transition-colors">
-                    <h3 className="text-xl font-bold mb-2 text-white/80 group-hover:text-white">{step.title}</h3>
-                    <p className="text-muted-foreground font-light text-sm">{step.desc}</p>
+                  <div key={idx} className="flex gap-6 items-start">
+                    <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-xs text-white/40 shrink-0">
+                      0{idx + 1}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white mb-1">{step.title}</h3>
+                      <p className="text-muted-foreground font-light text-sm">{step.desc}</p>
+                    </div>
                   </div>
                 ))}
               </div>

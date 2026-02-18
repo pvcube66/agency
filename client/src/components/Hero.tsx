@@ -15,12 +15,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-6xl md:text-8xl lg:text-9xl font-display font-medium text-white leading-[0.9] tracking-tight mb-8"
+            className="text-6xl md:text-8xl lg:text-[10rem] font-display font-medium text-white leading-[0.85] tracking-tight mb-8"
           >
-            Crafted <br />
-            <span className="text-white/50 italic">Websites</span> <br />
-            Lasting <br />
-            Impressions
+            Crafted <span className="text-white/30 italic font-light font-serif tracking-tighter">Websites</span> <br />
+            Lasting Impressions
           </motion.h1>
 
           <motion.div
