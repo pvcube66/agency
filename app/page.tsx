@@ -111,8 +111,8 @@ export default function Home() {
               <div className="pt-6 sm:pt-12 space-y-3 sm:space-y-4">
                 <div className="bg-[#1a1a1a] aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden relative group">
                   <Image
-                    src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80"
-                    alt="Coding"
+                    src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80"
+                    alt="Work"
                     fill
                     sizes="(max-width: 768px) 45vw, 300px"
                     className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
