@@ -3,7 +3,6 @@
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 import { useState, useEffect } from "react"
 
 export function Hero() {
@@ -45,14 +44,21 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, ...animationConfig }}
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 mt-8 sm:mt-12"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-8 sm:mt-12"
             >
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-sm font-light leading-relaxed">
                 We are a digital agency specializing in high-end design and development for brands that refuse to blend in.
               </p>
+            </motion.div>
 
-              <Link href="/#work" className="w-full sm:w-auto">
-                <button className="group flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-white text-black font-bold text-base sm:text-lg hover:bg-gray-100 transition-all rounded-full w-full sm:w-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, ...animationConfig }}
+              className="mt-6 sm:mt-8"
+            >
+              <Link href="/#work">
+                <button className="group inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-white text-black font-bold text-base sm:text-lg hover:bg-gray-100 transition-all rounded-full">
                   <span>See Our Works</span>
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
                 </button>

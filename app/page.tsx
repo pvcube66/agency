@@ -70,12 +70,18 @@ export default function Home() {
         {/* SERVICES SECTION */}
         <section id="services" className="py-16 sm:py-24 md:py-32 bg-white/[0.02] border-y border-white/5">
           <div className="container mx-auto px-4 sm:px-6">
-            <div className="max-w-3xl mb-10 sm:mb-16">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="max-w-3xl mb-10 sm:mb-16"
+            >
               <span className="text-xs sm:text-sm uppercase tracking-widest text-white/40 mb-3 sm:mb-4 block">Our Expertise</span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display leading-tight">
                 We build digital products that <br className="hidden md:block" /> solve real business problems.
               </h2>
-            </div>
+            </motion.div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {services.map((service, idx) => (

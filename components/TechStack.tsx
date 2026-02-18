@@ -174,18 +174,28 @@ function useTypewriter(text: string, speed: number = 50, startDelay: number = 0)
 }
 
 // Tech logo card component
-const TechLogo = memo(function TechLogo({ name, category, index, isInView }: { name: string; category: string; index: number; isInView: boolean }) {
+const TechLogo = memo(function TechLogo({ name, category, index }: { name: string; category: string; index: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-      transition={{ delay: index * 0.05, duration: 0.4 }}
-      className="group relative"
+      initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+      whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        delay: index * 0.08, 
+        duration: 0.5,
+        type: "spring",
+        stiffness: 200,
+        damping: 15
+      }}
+      whileHover={{ 
+        scale: 1.1,
+        rotate: 5,
+        transition: { duration: 0.2 }
+      }}
+      className="group relative cursor-pointer"
     >
       <motion.div
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.2 }}
-        className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-xl sm:shadow-2xl transition-all duration-300 group-hover:border-cyan-400/50 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.2)] sm:group-hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] cursor-pointer"
+        className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-xl sm:shadow-2xl transition-all duration-300 group-hover:border-cyan-400/50 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.3)]"
       >
         <TechIcon name={name} />
         <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-cyan-500/0 to-cyan-500/0 group-hover:from-cyan-500/20 group-hover:to-cyan-500/5 transition-all duration-300" />
@@ -307,7 +317,6 @@ const subtitleLines = [
                       name={tech.name}
                       category={tech.category}
                       index={rowIndex * 4 + techIndex}
-                      isInView={isInView}
                     />
                   ))}
                 </div>
