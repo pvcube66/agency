@@ -2,6 +2,7 @@
 
 import { Navigation } from "@/components/Navigation"
 import { Hero } from "@/components/Hero"
+import { TechStack } from "@/components/TechStack"
 import { Footer } from "@/components/Footer"
 import { ProjectCard } from "@/components/ProjectCard"
 import { highlightedProjects } from "@/data"
@@ -63,6 +64,9 @@ export default function Home() {
             </Link>
           </motion.div>
         </section>
+
+        {/* TECH STACK SECTION */}
+        <TechStack />
 
         {/* SERVICES SECTION */}
         <section id="services" className="py-32 bg-white/[0.02] border-y border-white/5">
