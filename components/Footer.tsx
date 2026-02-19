@@ -9,19 +9,19 @@ export const Footer = memo(function Footer() {
         <div className="flex flex-col lg:flex-row justify-between items-start mb-10 sm:mb-16 gap-8 lg:gap-0">
           <div className="max-w-2xl">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-display text-white mb-6 sm:mb-8 leading-tight">
-              Create Bold. <br />
-              Deliver Better.
+              Dream Big. <br />
+              Build Bigger.
             </h2>
             <Link href="/contact">
               <button className="text-lg sm:text-xl md:text-2xl text-white border-b border-white pb-2 hover:opacity-70 transition-opacity">
-                Start a Project
+                Let&apos;s Create Magic
               </button>
             </Link>
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:gap-12 md:gap-24 w-full lg:w-auto">
             <div>
-              <h4 className="text-white/40 uppercase tracking-widest text-xs sm:text-sm mb-4 sm:mb-6">Socials</h4>
+              <h4 className="text-white/40 uppercase tracking-widest text-xs sm:text-sm mb-4 sm:mb-6">Connect</h4>
               <ul className="space-y-3 sm:space-y-4">
                 <li>
                   <a 
@@ -56,7 +56,7 @@ export const Footer = memo(function Footer() {
               </ul>
             </div>
             <div>
-              <h4 className="text-white/40 uppercase tracking-widest text-xs sm:text-sm mb-4 sm:mb-6">Menu</h4>
+              <h4 className="text-white/40 uppercase tracking-widest text-xs sm:text-sm mb-4 sm:mb-6">Navigate</h4>
               <ul className="space-y-3 sm:space-y-4">
                 <li><Link href="/#work" className="text-white hover:text-white/70 transition-colors text-sm sm:text-base">Work</Link></li>
                 <li><Link href="/#services" className="text-white hover:text-white/70 transition-colors text-sm sm:text-base">Services</Link></li>

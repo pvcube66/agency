@@ -18,8 +18,8 @@ export function Hero() {
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
+  // Delay video loading slightly to prioritize critical content
   useEffect(() => {
-    // Delay video loading slightly to prioritize critical content
     const timer = setTimeout(() => setShouldLoadVideo(true), 100)
     return () => clearTimeout(timer)
   }, [])
@@ -57,19 +57,19 @@ export function Hero() {
               transition={{ ...animationConfig }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-medium text-white leading-[0.9] sm:leading-[0.85] tracking-tight mb-6 sm:mb-8 will-change-transform"
             >
-              Crafted <motion.span 
+              We Build <motion.span 
                 className="text-white/30 italic font-light font-serif tracking-tighter inline-block"
                 initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ ...animationConfig, delay: staggerDelay }}
-              >Websites</motion.span> <br className="hidden sm:block" />
+              >Digital</motion.span> <br className="hidden sm:block" />
               <motion.span
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ ...animationConfig, delay: staggerDelay * 2 }}
                 className="inline-block"
               >
-                Lasting Impressions
+                Experiences That Hit Different
               </motion.span>
             </motion.h1>
 
@@ -80,7 +80,7 @@ export function Hero() {
               className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-8 sm:mt-12"
             >
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-sm font-light leading-relaxed">
-                We are a digital agency specializing in high-end design and development for brands that refuse to blend in.
+                We don't just code websites—we craft digital masterpieces that make your brand absolutely unmissable. No cap.
               </p>
             </motion.div>
 
@@ -97,7 +97,7 @@ export function Hero() {
                   whileTap={{ scale: prefersReducedMotion ? 1 : 0.95 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <span>See Our Works</span>
+                  <span>Peep Our Work</span>
                   <motion.div
                     initial={{ x: 0 }}
                     whileHover={{ x: 5 }}

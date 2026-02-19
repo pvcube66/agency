@@ -132,12 +132,12 @@ export const ProjectCard = memo(function ProjectCard({ project, index, highlight
                 {project.description}
               </p>
             )}
-            <motion.p 
+            <motion.p
               className="text-white/60 text-xs sm:text-sm flex items-center gap-1 transition-colors duration-300 group-hover:text-white"
               whileHover={{ x: 3 }}
               transition={{ duration: 0.2 }}
             >
-              View Project <ArrowUpRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              Check It Out <ArrowUpRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </motion.p>
           </div>
         </motion.div>

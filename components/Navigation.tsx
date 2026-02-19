@@ -10,7 +10,7 @@ const navLinks = [
   { name: "Work", href: "/#work" },
   { name: "Services", href: "/#services" },
   { name: "About", href: "/#about" },
-  { name: "Contact", href: "/contact" },
+  { name: "Let's Talk", href: "/contact" },
 ]
 
 // Memoized mobile menu component

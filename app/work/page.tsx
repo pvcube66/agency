@@ -9,10 +9,10 @@ import { projects } from "@/data"
 
 // Static data - defined outside component to prevent recreating on every render
 const stats = [
-  { number: "16+", label: "Projects Completed" },
-  { number: "100%", label: "Client Satisfaction" },
-  { number: "24/7", label: "Support Available" },
-  { number: "5★", label: "Average Rating" },
+  { number: "16+", label: "Projects Shipped" },
+  { number: "100%", label: "Clients Happy" },
+  { number: "24/7", label: "Always On" },
+  { number: "5★", label: "Pure Vibes" },
 ]
 
 // Stats component with animation
@@ -83,15 +83,15 @@ export default function WorkPage() {
               animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             >
-              Our Work
+              The Collection
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-xl text-muted-foreground font-light max-w-2xl mx-auto"
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
               animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             >
-              Explore our complete portfolio of web applications, platforms, and digital experiences we&apos;ve crafted for clients worldwide.
+              Every project tells a story. These are the digital experiences we&apos;ve crafted that broke the internet (in a good way).
             </motion.p>
           </motion.div>
 
@@ -102,14 +102,14 @@ export default function WorkPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <motion.h2 
+            <motion.h2
               className="text-3xl md:text-4xl font-display mb-12"
               initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              Featured Projects
+              The Greatest Hits
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {featuredProjects.map((project, idx) => (
@@ -124,14 +124,14 @@ export default function WorkPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <motion.h2 
+            <motion.h2
               className="text-3xl md:text-4xl font-display mb-12"
               initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              All Projects
+              Everything Else
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {otherProjects.map((project, idx) => (

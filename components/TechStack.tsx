@@ -27,8 +27,8 @@ const techRows = [
 
 // Static subtitle lines
 const subtitleLines = [
-  "Blazing performance, boundless scale.",
-  "Crafted with surgical precision."
+  "Speed that breaks the internet.",
+  "Precision so clean, it's almost illegal."
 ]
 
 // Pre-computed animation variants - prevents recreation on every render
@@ -39,11 +39,6 @@ const techLogoVariants = {
     rotate: 8,
     transition: { duration: 0.2 }
   }
-}
-
-const cardHoverVariants = {
-  borderColor: "rgba(34, 211, 238, 0.5)",
-  boxShadow: "0 0 30px rgba(34, 211, 238, 0.3)",
 }
 
 // Static star data with pre-computed styles
@@ -274,7 +269,7 @@ export function TechStack() {
             >
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-medium text-white leading-tight">
                 <span className="relative">
-                  modern tech, peak performance.
+                  Next-level tech. Zero compromises.
                   <motion.span
                     animate={{ opacity: [0.5, 1, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity }}
@@ -308,7 +303,7 @@ export function TechStack() {
             >
               <div className="relative inline-block">
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-display text-white">
-                  See our work built to:
+                  Built different for:
                 </h3>
                 <motion.div
                   initial={{ scaleX: 0 }}

@@ -22,9 +22,9 @@ import {
 
 // Static data - defined outside component to prevent recreating on every render
 const approachSteps = [
-  { title: "Discovery First", desc: "Understanding your vision, goals, and market positioning." },
-  { title: "Mobile-First Design", desc: "Ensuring a seamless experience across all modern devices." },
-  { title: "Pixel-Perfect Development", desc: "Clean, performant code that brings designs to life." },
+  { title: "Vision & Vibes", desc: "We dive deep into your brand DNA to understand what makes you tick." },
+  { title: "Mobile-First Magic", desc: "Every pixel perfected for screens of all sizes. Smooth everywhere." },
+  { title: "Code That Slaps", desc: "Clean, blazing-fast code that brings your wildest ideas to reality." },
 ]
 
 // Optimized section wrapper with Framer Motion
@@ -81,7 +81,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              Featured <br className="hidden sm:block" /> Works
+              Our Best <br className="hidden sm:block" /> Drops
             </motion.h2>
             <motion.p 
               className="text-muted-foreground max-w-sm text-sm sm:text-base"
@@ -90,7 +90,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             >
-              A collection of our best projects that showcase our expertise and attention to detail.
+              Projects so fire, they&apos;ll make your competition sweat. Pure digital excellence.
             </motion.p>
           </div>
 
@@ -114,7 +114,7 @@ export default function Home() {
                 whileTap={{ scale: prefersReducedMotion ? 1 : 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                <span>View All Projects</span>
+                <span>See Everything</span>
                 <motion.div
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
@@ -146,10 +146,10 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                Our Expertise
+                What We Do
               </motion.span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display leading-tight">
-                We build digital products that <br className="hidden md:block" /> solve real business problems.
+                We craft digital experiences <br className="hidden md:block" /> that turn heads & drive results.
               </h2>
             </motion.div>
 
@@ -243,13 +243,13 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                Our Approach
+                How We Roll
               </motion.span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-display mb-6 sm:mb-8 leading-tight">
-                Design that speaks, <br className="hidden sm:block" /> Defining that connects.
+                Design that hits, <br className="hidden sm:block" /> Brands that stick.
               </h2>
               <p className="text-muted-foreground mb-8 sm:mb-12 max-w-md font-light text-sm sm:text-base mx-auto lg:mx-0">
-                We don&apos;t just build websites; we create digital identities that resonate with your audience and drive measurable results.
+                We don&apos;t just code websites—we architect digital experiences that stop the scroll and start conversations.
               </p>
               <div className="space-y-4 sm:space-y-6">
                 {approachSteps.map((step, idx) => (
@@ -289,7 +289,7 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            Frequently Asked Questions
+            The Tea ☕
           </motion.h2>
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, idx) => (

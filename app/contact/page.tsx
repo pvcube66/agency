@@ -118,21 +118,21 @@ export default function ContactPage() {
             animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <motion.h1 
+            <motion.h1
               className="text-6xl md:text-8xl font-display mb-6"
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
               animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             >
-              Let&apos;s Talk
+              Slide Into Our DMs
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-xl text-muted-foreground font-light max-w-2xl mx-auto"
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
               animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             >
-              Have a project in mind? We&apos;d love to hear about it. Send us a message and we&apos;ll get back to you as soon as possible.
+              Got a wild idea? We&apos;re here for it. Hit us up and let&apos;s make some digital magic happen.
             </motion.p>
           </motion.div>
 
@@ -185,40 +185,40 @@ export default function ContactPage() {
               >
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-white/60">Name</Label>
-                  <Input 
+                  <Input
                     ref={nameRef}
                     id="name"
                     name="name"
-                    placeholder="John Doe" 
-                    className="bg-transparent border-white/10 focus:border-white h-12 text-lg transition-all duration-200" 
+                    placeholder="Your name"
+                    className="bg-transparent border-white/10 focus:border-white h-12 text-lg transition-all duration-200"
                     required
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-white/60">Email</Label>
-                  <Input 
+                  <Input
                     ref={emailRef}
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="john@example.com" 
-                    className="bg-transparent border-white/10 focus:border-white h-12 text-lg transition-all duration-200" 
+                    placeholder="your@email.com"
+                    className="bg-transparent border-white/10 focus:border-white h-12 text-lg transition-all duration-200"
                     required
                   />
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 className="space-y-2"
                 variants={itemVariants}
               >
                 <Label htmlFor="message" className="text-white/60">Message</Label>
-                <Textarea 
+                <Textarea
                   ref={messageRef}
                   id="message"
                   name="message"
-                  placeholder="Tell us about your project..." 
-                  className="bg-transparent border-white/10 focus:border-white min-h-[200px] text-lg resize-none transition-all duration-200" 
+                  placeholder="Spill the tea on your project..."
+                  className="bg-transparent border-white/10 focus:border-white min-h-[200px] text-lg resize-none transition-all duration-200"
                   required
                 />
               </motion.div>
@@ -236,10 +236,10 @@ export default function ContactPage() {
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="animate-spin" /> Sending...
+                      <Loader2 className="animate-spin" /> Firing away...
                     </>
                   ) : (
-                    "Send Message"
+                    "Drop It"
                   )}
                 </motion.button>
               </motion.div>
