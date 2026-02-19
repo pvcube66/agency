@@ -1,7 +1,7 @@
 "use client"
 
-import { motion, useInView } from "framer-motion"
-import { useRef, useEffect, useState, ReactNode, memo } from "react"
+import { motion, useInView, useReducedMotion } from "framer-motion"
+import { useRef, memo, ReactNode, useState, useEffect } from "react"
 
 // Comprehensive Tech Stack Data
 const techRows = [
@@ -133,24 +133,134 @@ const TechIcon = memo(function TechIcon({ name }: { name: string }) {
   )
 })
 
-// Typewriter hook
-function useTypewriter(text: string, speed: number = 50, startDelay: number = 0) {
+// Optimized Starfield with Framer Motion - 20 stars instead of 60
+function Starfield() {
+  // Pre-calculated positions for 20 stars
+  const stars = [
+    { id: 1, x: 10, y: 15, size: 2, delay: 0, duration: 3 },
+    { id: 2, x: 25, y: 35, size: 1.5, delay: 0.5, duration: 2.5 },
+    { id: 3, x: 40, y: 10, size: 2.5, delay: 1, duration: 3.5 },
+    { id: 4, x: 55, y: 45, size: 1.5, delay: 1.5, duration: 2.8 },
+    { id: 5, x: 70, y: 20, size: 2, delay: 0.3, duration: 3.2 },
+    { id: 6, x: 85, y: 55, size: 1.5, delay: 0.8, duration: 2.6 },
+    { id: 7, x: 15, y: 65, size: 2, delay: 1.2, duration: 3.1 },
+    { id: 8, x: 35, y: 80, size: 1.5, delay: 0.2, duration: 2.9 },
+    { id: 9, x: 60, y: 70, size: 2.5, delay: 1.7, duration: 3.3 },
+    { id: 10, x: 80, y: 85, size: 1.5, delay: 0.6, duration: 2.7 },
+    { id: 11, x: 45, y: 25, size: 2, delay: 1.1, duration: 3 },
+    { id: 12, x: 20, y: 50, size: 1.5, delay: 0.4, duration: 2.8 },
+    { id: 13, x: 75, y: 40, size: 2, delay: 1.4, duration: 3.2 },
+    { id: 14, x: 50, y: 60, size: 1.5, delay: 0.9, duration: 2.5 },
+    { id: 15, x: 90, y: 30, size: 2.5, delay: 1.3, duration: 3.4 },
+    { id: 16, x: 5, y: 75, size: 1.5, delay: 0.7, duration: 2.6 },
+    { id: 17, x: 65, y: 5, size: 2, delay: 1.8, duration: 3 },
+    { id: 18, x: 30, y: 90, size: 1.5, delay: 0.1, duration: 2.9 },
+    { id: 19, x: 95, y: 70, size: 2, delay: 1.6, duration: 3.1 },
+    { id: 20, x: 12, y: 30, size: 1.5, delay: 0.95, duration: 2.7 },
+  ]
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {stars.map((star) => (
+        <motion.div
+          key={star.id}
+          className="absolute rounded-full bg-white will-change-transform"
+          style={{
+            left: `${star.x}%`,
+            top: `${star.y}%`,
+            width: star.size,
+            height: star.size,
+          }}
+          animate={{
+            opacity: [0.2, 1, 0.2],
+            scale: [1, 1.3, 1],
+          }}
+          transition={{
+            duration: star.duration,
+            delay: star.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// Tech logo card component with Framer Motion
+const TechLogo = memo(function TechLogo({ name, category, index }: { 
+  name: string; 
+  category: string; 
+  index: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+      whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        delay: index * 0.08, 
+        duration: 0.5,
+        type: "spring",
+        stiffness: 200,
+        damping: 15
+      }}
+      whileHover={{ 
+        scale: 1.15,
+        rotate: 8,
+        transition: { duration: 0.2 }
+      }}
+      className="group relative cursor-pointer will-change-transform"
+    >
+      <motion.div
+        className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-xl sm:shadow-2xl"
+        whileHover={{
+          borderColor: "rgba(34, 211, 238, 0.5)",
+          boxShadow: "0 0 30px rgba(34, 211, 238, 0.3)",
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        <TechIcon name={name} />
+        <motion.div 
+          className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-cyan-500/0 to-cyan-500/0"
+          whileHover={{
+            background: "linear-gradient(to bottom right, rgba(34, 211, 238, 0.2), rgba(34, 211, 238, 0.05))",
+          }}
+        />
+      </motion.div>
+      
+      {/* Tooltip */}
+      <motion.div 
+        className="absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2 pointer-events-none z-50"
+        initial={{ opacity: 0, y: 5 }}
+        whileHover={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        <div className="px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-black/90 border border-cyan-500/30 backdrop-blur-md shadow-xl whitespace-nowrap">
+          <p className="text-white font-medium text-xs sm:text-sm">{name}</p>
+          <p className="text-cyan-400 text-[10px] sm:text-xs">{category}</p>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+})
+
+// Typewriter effect with Framer Motion
+function TypewriterText({ text, speed = 50, delay = 0 }: { text: string; speed?: number; delay?: number }) {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, amount: 0.5 })
+  const prefersReducedMotion = useReducedMotion()
   const [displayText, setDisplayText] = useState("")
   const [isComplete, setIsComplete] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { amount: 0.5 })
-  const [hasAnimated, setHasAnimated] = useState(false)
 
   useEffect(() => {
-    if (!isInView) {
-      setDisplayText("")
-      setIsComplete(false)
-      setHasAnimated(false)
+    if (!isInView || prefersReducedMotion) {
+      if (prefersReducedMotion && isInView) {
+        setDisplayText(text)
+        setIsComplete(true)
+      }
       return
     }
-
-    if (hasAnimated) return
-    setHasAnimated(true)
 
     const startTimeout = setTimeout(() => {
       let index = 0
@@ -165,157 +275,92 @@ function useTypewriter(text: string, speed: number = 50, startDelay: number = 0)
       }, speed)
 
       return () => clearInterval(interval)
-    }, startDelay)
+    }, delay)
 
     return () => clearTimeout(startTimeout)
-  }, [isInView, text, speed, startDelay, hasAnimated])
-
-  return { displayText, isComplete, ref }
-}
-
-// Starfield component - Animated twinkling stars
-function Starfield() {
-  const [mounted, setMounted] = useState(false)
-  
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const stars = Array.from({ length: 60 }, (_, i) => ({
-    id: i,
-    x: ((i * 17) % 100),
-    y: ((i * 31) % 100),
-    size: ((i % 3) + 1.5),
-    delay: ((i * 0.2) % 3),
-    duration: ((i % 3) + 2.5),
-  }))
-  
-  if (!mounted) return null
+  }, [isInView, text, speed, delay, prefersReducedMotion])
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {stars.map((star) => (
-        <motion.div
-          key={star.id}
-          className="absolute rounded-full bg-white"
-          style={{
-            left: `${star.x}%`,
-            top: `${star.y}%`,
-            width: star.size,
-            height: star.size,
-          }}
-          animate={{
-            opacity: [0.2, 1, 0.2],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: star.duration,
-            delay: star.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+    <span ref={ref} className="relative">
+      {displayText}
+      {!isComplete && !prefersReducedMotion && (
+        <motion.span
+          animate={{ opacity: [1, 0] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+          className="absolute -right-1 top-0 w-1 h-full bg-cyan-400"
         />
-      ))}
-    </div>
+      )}
+    </span>
   )
 }
-
-// Tech logo card component
-const TechLogo = memo(function TechLogo({ name, category, index }: { name: string; category: string; index: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
-      whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ 
-        delay: index * 0.08, 
-        duration: 0.5,
-        type: "spring",
-        stiffness: 200,
-        damping: 15
-      }}
-      whileHover={{ 
-        scale: 1.1,
-        rotate: 5,
-        transition: { duration: 0.2 }
-      }}
-      className="group relative cursor-pointer"
-    >
-      <motion.div
-        className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-xl sm:shadow-2xl transition-all duration-300 group-hover:border-cyan-400/50 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.3)]"
-      >
-        <TechIcon name={name} />
-        <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-cyan-500/0 to-cyan-500/0 group-hover:from-cyan-500/20 group-hover:to-cyan-500/5 transition-all duration-300" />
-      </motion.div>
-      
-      {/* Tooltip */}
-      <div className="absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-50">
-        <div className="px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-black/90 border border-cyan-500/30 backdrop-blur-md shadow-xl whitespace-nowrap">
-          <p className="text-white font-medium text-xs sm:text-sm">{name}</p>
-          <p className="text-cyan-400 text-[10px] sm:text-xs">{category}</p>
-        </div>
-      </div>
-    </motion.div>
-  )
-})
 
 export function TechStack() {
-  const { displayText: mainText, isComplete: mainComplete, ref: mainRef } = useTypewriter("modern tech, peak performance.", 60, 0)
-  const { displayText: ctaText, isComplete: ctaComplete, ref: ctaRef } = useTypewriter("See our work built to:", 50, 1500)
-
   const containerRef = useRef(null)
-  const isInView = useInView(containerRef, { amount: 0.3 })
+  const isInView = useInView(containerRef, { once: true, amount: 0.2 })
+  const prefersReducedMotion = useReducedMotion()
 
-const subtitleLines = [
-  "Blazing performance, boundless scale.",
-  "Crafted with surgical precision."
-]
-
+  const subtitleLines = [
+    "Blazing performance, boundless scale.",
+    "Crafted with surgical precision."
+  ]
 
   return (
     <section ref={containerRef} className="relative py-16 sm:py-24 md:py-32 overflow-hidden bg-[#050505]">
       {/* Background Elements */}
-      <div className="absolute top-1/4 -left-20 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-cyan-500/[0.03] rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-cyan-500/[0.02] rounded-full blur-3xl pointer-events-none" />
+      <motion.div 
+        className="absolute top-1/4 -left-20 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-cyan-500/[0.03] rounded-full blur-3xl pointer-events-none"
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.03, 0.05, 0.03],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div 
+        className="absolute bottom-0 right-0 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-cyan-500/[0.02] rounded-full blur-3xl pointer-events-none"
+        animate={{
+          scale: [1, 1.15, 1],
+          opacity: [0.02, 0.04, 0.02],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
+      />
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24 items-center">
           {/* LEFT COLUMN */}
           <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
-            <div ref={mainRef}>
-              <motion.h2
-                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-medium text-white leading-tight"
-              >
-                <span className="relative">
-                  {mainText}
-                  {!mainComplete && (
-                    <motion.span
-                      animate={{ opacity: [1, 0] }}
-                      transition={{ duration: 0.8, repeat: Infinity }}
-                      className="absolute -right-1 top-0 w-1 h-full bg-cyan-400"
-                    />
-                  )}
-                </span>
-                {mainComplete && (
-                  <motion.span
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="inline-block ml-2 text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.8)]"
-                  >
-                    .
-                  </motion.span>
-                )}
-              </motion.h2>
-            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-medium text-white leading-tight">
+                <TypewriterText text="modern tech, peak performance." speed={60} delay={0} />
+                <motion.span
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="inline-block ml-2 text-cyan-400"
+                >
+                  .
+                </motion.span>
+              </h2>
+            </motion.div>
 
             <div className="space-y-2">
               {subtitleLines.map((line, idx) => (
                 <motion.p
                   key={idx}
-                  animate={mainComplete && isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ delay: idx * 0.1, duration: 0.5 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: 1 + idx * 0.1, duration: 0.5 }}
                   className="text-base sm:text-lg md:text-xl text-muted-foreground font-light"
                 >
                   {line}
@@ -323,39 +368,29 @@ const subtitleLines = [
               ))}
             </div>
 
-            <div ref={ctaRef} className="pt-4">
-              <motion.div
-                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="relative inline-block"
-              >
+            <motion.div 
+              className="pt-4"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ delay: 1.5, duration: 0.5 }}
+            >
+              <div className="relative inline-block">
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-display text-white">
-                  <span className="relative">
-                    {ctaText}
-                    {!ctaComplete && (
-                      <motion.span
-                        animate={{ opacity: [1, 0] }}
-                        transition={{ duration: 0.8, repeat: Infinity }}
-                        className="absolute -right-1 top-0 w-0.5 h-full bg-cyan-400"
-                      />
-                    )}
-                  </span>
+                  <TypewriterText text="See our work built to:" speed={50} delay={1500} />
                 </h3>
-                {ctaComplete && (
-                  <motion.div
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 0.6 }}
-                    className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-cyan-600 origin-left"
-                  />
-                )}
-              </motion.div>
-            </div>
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={isInView ? { scaleX: 1 } : {}}
+                  transition={{ delay: 2.5, duration: 0.6 }}
+                  className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-cyan-600 origin-left"
+                />
+              </div>
+            </motion.div>
           </div>
 
           {/* RIGHT COLUMN - Tech Logos */}
           <div className="relative">
-            {/* Starfield Background - Animated twinkling stars */}
+            {/* Starfield Background */}
             <Starfield />
             
             <div className="relative z-10 space-y-4 sm:space-y-6">
@@ -373,7 +408,18 @@ const subtitleLines = [
               ))}
             </div>
 
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] sm:w-[300px] h-[200px] sm:h-[300px] bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+            <motion.div 
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] sm:w-[300px] h-[200px] sm:h-[300px] bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.1, 0.2, 0.1],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
           </div>
         </div>
       </div>
