@@ -98,22 +98,6 @@ export default function RootLayout({
           href="https://res.cloudinary.com/dhvljfjkd/image/upload/v1771436561/landingagency-poster.jpg"
           type="image/jpeg"
         />
-        
-        {/* Preload critical fonts */}
-        <link 
-          rel="preload" 
-          href={`${manrope.variable}`}
-          as="font" 
-          type="font/woff2" 
-          crossOrigin="anonymous" 
-        />
-        <link 
-          rel="preload" 
-          href={`${playfair.variable}`}
-          as="font" 
-          type="font/woff2" 
-          crossOrigin="anonymous" 
-        />
       </head>
       <body className="min-h-screen bg-background antialiased">
         <LoadingProvider>

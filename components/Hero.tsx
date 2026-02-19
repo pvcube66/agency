@@ -6,24 +6,13 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 
 export function Hero() {
-  const [isMobile, setIsMobile] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const [videoLoaded, setVideoLoaded] = useState(false)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
   const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024)
-    }
-    
-    checkMobile()
-    window.addEventListener("resize", checkMobile, { passive: true })
-    
-    return () => {
-      window.removeEventListener("resize", checkMobile)
-    }
+    setMounted(true)
   }, [])
 
   // Delay video loading slightly to prioritize critical content
@@ -35,7 +24,7 @@ export function Hero() {
   // Optimized animation config
   const animationConfig = prefersReducedMotion
     ? { duration: 0 }
-    : { duration: isMobile ? 0.6 : 0.9, ease: [0.22, 1, 0.36, 1] }
+    : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
 
   const staggerDelay = prefersReducedMotion ? 0 : 0.1
 
@@ -56,7 +45,7 @@ export function Hero() {
       />
 
       {/* Mobile Animated Background - Floating gradient orbs */}
-      {isMobile && (
+      {mounted && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none lg:hidden">
           {/* Large cyan orb */}
           <motion.div
@@ -142,7 +131,7 @@ export function Hero() {
               initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...animationConfig }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-medium text-white leading-[0.9] sm:leading-[0.85] tracking-tight mb-6 sm:mb-8 will-change-transform"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-medium text-white leading-[1.1] sm:leading-[1.05] md:leading-[0.95] tracking-tight mb-6 sm:mb-8 will-change-transform"
             >
               We Build <motion.span 
                 className="text-white/30 italic font-light font-serif tracking-tighter inline-block"
