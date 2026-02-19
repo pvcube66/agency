@@ -88,6 +88,7 @@ export const ProjectCard = memo(function ProjectCard({ project, index, highlight
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               onLoad={() => setImageLoaded(true)}
+              priority={index < 3}
               loading={index < 3 ? "eager" : "lazy"}
               quality={80}
             />

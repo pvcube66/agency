@@ -1,1 +1,1 @@
-export { useInView, useReducedMotion, useTypewriter, useScrollProgress } from './useInView'
+export { useSharedInView, useReducedMotion, useTypewriter, useScrollProgress, useRAF, useLazyLoad } from './useInView'

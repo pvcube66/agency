@@ -47,34 +47,26 @@ const MobileMenu = memo(function MobileMenu({
 })
 
 export function Navigation() {
-  const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
   const pathname = usePathname()
 
-  // Optimized scroll handler with RAF
+  // Optimized scroll handler using CSS custom properties instead of React state for styles
   useEffect(() => {
-    let rafId: number
-    let lastScrollY = 0
-
+    let ticking = false
+    
     const handleScroll = () => {
-      if (rafId) return
-      
-      rafId = requestAnimationFrame(() => {
-        const scrollY = window.scrollY
-        // Only update state if change is significant
-        if (Math.abs(scrollY - lastScrollY) > 5) {
-          setIsScrolled(scrollY > 50)
-          lastScrollY = scrollY
-        }
-        rafId = 0
-      })
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrollY(window.scrollY)
+          ticking = false
+        })
+        ticking = true
+      }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-      if (rafId) cancelAnimationFrame(rafId)
-    }
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   // Lock body scroll when mobile menu is open
@@ -93,11 +85,21 @@ export function Navigation() {
     setIsMobileOpen(false)
   }, [])
 
+  // Calculate styles based on scroll position
+  const isScrolled = scrollY > 50
+  const headerOpacity = Math.min(scrollY / 50, 0.95)
+  const blurAmount = Math.min(scrollY / 50, 12)
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 gpu-layer ${
-        isScrolled ? "bg-background/95 backdrop-blur-md border-b border-white/5 py-3 sm:py-4" : "bg-transparent py-4 sm:py-6"
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      style={{
+        backgroundColor: isScrolled ? `rgba(5, 5, 5, ${headerOpacity})` : 'transparent',
+        backdropFilter: isScrolled ? `blur(${blurAmount}px)` : 'none',
+        borderBottom: isScrolled ? '1px solid rgba(255, 255, 255, 0.05)' : 'none',
+        paddingTop: isScrolled ? '0.75rem' : '1rem',
+        paddingBottom: isScrolled ? '0.75rem' : '1rem',
+      }}
     >
       <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
         <Link href="/" className="shrink-0">

@@ -1,18 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 
-interface UseInViewOptions {
+// Global observer map to share observers across components with same options
+const observerMap = new Map<string, IntersectionObserver>();
+
+interface UseSharedInViewOptions {
   threshold?: number;
   rootMargin?: string;
   triggerOnce?: boolean;
 }
 
-export function useInView({
+export function useSharedInView({
   threshold = 0.1,
   rootMargin = "0px",
   triggerOnce = true,
-}: UseInViewOptions = {}) {
+}: UseSharedInViewOptions = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
 
@@ -20,24 +23,43 @@ export function useInView({
     const element = ref.current;
     if (!element) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          if (triggerOnce) {
-            observer.unobserve(element);
-          }
-        } else if (!triggerOnce) {
-          setIsInView(false);
+    // Create unique key for this observer configuration
+    const key = `${threshold}-${rootMargin}`;
+    
+    // Get or create shared observer
+    let observer = observerMap.get(key);
+    
+    if (!observer) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const target = entry.target as HTMLElement & { _onInView?: (inView: boolean) => void };
+            target._onInView?.(entry.isIntersecting);
+          });
+        },
+        { threshold, rootMargin }
+      );
+      observerMap.set(key, observer);
+    }
+
+    // Store callback on element
+    (element as HTMLElement & { _onInView?: (inView: boolean) => void })._onInView = (inView: boolean) => {
+      if (inView) {
+        setIsInView(true);
+        if (triggerOnce && observer) {
+          observer.unobserve(element);
         }
-      },
-      { threshold, rootMargin }
-    );
+      } else if (!triggerOnce) {
+        setIsInView(false);
+      }
+    };
 
     observer.observe(element);
 
     return () => {
-      observer.unobserve(element);
+      if (observer) {
+        observer.unobserve(element);
+      }
     };
   }, [threshold, rootMargin, triggerOnce]);
 
@@ -65,14 +87,11 @@ export function useReducedMotion() {
 export function useTypewriter(text: string, speed: number = 50, startDelay: number = 0) {
   const [displayText, setDisplayText] = useState("");
   const [isComplete, setIsComplete] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
-  const { ref, isInView } = useInView({ threshold: 0.5, triggerOnce: true });
+  const { ref, isInView } = useSharedInView({ threshold: 0.5, triggerOnce: true });
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!isInView || hasStarted) return;
-    
-    setHasStarted(true);
+    if (!isInView || isComplete) return;
     
     if (prefersReducedMotion) {
       setDisplayText(text);
@@ -80,8 +99,8 @@ export function useTypewriter(text: string, speed: number = 50, startDelay: numb
       return;
     }
 
-    const startTimeout = setTimeout(() => {
-      let index = 0;
+    let index = 0;
+    const timeout = setTimeout(() => {
       const interval = setInterval(() => {
         if (index <= text.length) {
           setDisplayText(text.slice(0, index));
@@ -95,8 +114,8 @@ export function useTypewriter(text: string, speed: number = 50, startDelay: numb
       return () => clearInterval(interval);
     }, startDelay);
 
-    return () => clearTimeout(startTimeout);
-  }, [isInView, text, speed, startDelay, hasStarted, prefersReducedMotion]);
+    return () => clearTimeout(timeout);
+  }, [isInView, text, speed, startDelay, prefersReducedMotion, isComplete]);
 
   return { displayText, isComplete, ref };
 }
@@ -131,4 +150,63 @@ export function useScrollProgress() {
   }, []);
 
   return progress;
+}
+
+// Hook for optimized RAF-based animations
+export function useRAF(callback: (time: number) => void, active: boolean = true) {
+  const callbackRef = useRef(callback);
+  const rafIdRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    if (!active) return;
+
+    let lastTime = 0;
+    const animate = (time: number) => {
+      // Throttle to ~60fps
+      if (time - lastTime >= 16) {
+        callbackRef.current(time);
+        lastTime = time;
+      }
+      rafIdRef.current = requestAnimationFrame(animate);
+    };
+
+    rafIdRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
+    };
+  }, [active]);
+}
+
+// Hook for intersection-based lazy loading
+export function useLazyLoad<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(element);
+        }
+      },
+      { rootMargin: "100px" }
+    );
+
+    observer.observe(element);
+
+    return () => observer.unobserve(element);
+  }, []);
+
+  return { ref, isVisible };
 }

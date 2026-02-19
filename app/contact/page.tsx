@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, FormEvent } from "react"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { Loader2, Phone } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa"
@@ -13,48 +13,70 @@ import { toast } from "sonner"
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: ""
-  })
+  
+  // Use refs for form fields to prevent re-renders on every keystroke
+  const formRef = useRef<HTMLFormElement>(null)
+  const nameRef = useRef<HTMLInputElement>(null)
+  const emailRef = useRef<HTMLInputElement>(null)
+  const messageRef = useRef<HTMLTextAreaElement>(null)
   
   const headerRef = useRef(null)
-  const formRef = useRef(null)
+  const formContainerRef = useRef(null)
   const isHeaderInView = useInView(headerRef, { once: true })
-  const isFormInView = useInView(formRef, { once: true })
+  const isFormInView = useInView(formContainerRef, { once: true })
   const prefersReducedMotion = useReducedMotion()
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     
+    // Get values from refs instead of state
+    const formData = {
+      name: nameRef.current?.value || "",
+      email: emailRef.current?.value || "",
+      message: messageRef.current?.value || "",
+    }
+    
     try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+      
       const response = await fetch("/api/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+        signal: controller.signal,
       })
 
+      clearTimeout(timeoutId)
       const data = await response.json()
 
       if (response.ok) {
         toast.success("We'll contact you soon", {
           description: "Thank you for reaching out!",
         })
-        setFormData({ name: "", email: "", message: "" })
+        // Reset form
+        if (formRef.current) {
+          formRef.current.reset()
+        }
       } else {
         toast.error("Failed to send message", {
           description: data.error || "Please try again later.",
         })
       }
     } catch (error) {
-      console.error("Error sending message:", error)
-      toast.error("Failed to send message", {
-        description: "Please try again later.",
-      })
+      if (error instanceof Error && error.name === 'AbortError') {
+        toast.error("Request timeout", {
+          description: "Please try again later.",
+        })
+      } else {
+        console.error("Error sending message:", error)
+        toast.error("Failed to send message", {
+          description: "Please try again later.",
+        })
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -115,7 +137,7 @@ export default function ContactPage() {
           </motion.div>
 
           <motion.div
-            ref={formRef}
+            ref={formContainerRef}
             className="bg-white/[0.02] border border-white/10 p-8 md:p-12"
             initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
             animate={isFormInView ? { opacity: 1, y: 0 } : {}}
@@ -150,6 +172,7 @@ export default function ContactPage() {
             </motion.div>
             
             <motion.form 
+              ref={formRef}
               onSubmit={handleSubmit} 
               className="space-y-8"
               variants={containerVariants}
@@ -160,27 +183,25 @@ export default function ContactPage() {
                 className="grid grid-cols-1 md:grid-cols-2 gap-8"
                 variants={itemVariants}
               >
-                <motion.div 
-                  className="space-y-2"
-                >
+                <div className="space-y-2">
                   <Label htmlFor="name" className="text-white/60">Name</Label>
                   <Input 
+                    ref={nameRef}
                     id="name"
+                    name="name"
                     placeholder="John Doe" 
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="bg-transparent border-white/10 focus:border-white h-12 text-lg transition-all duration-200" 
                     required
                   />
-                </motion.div>
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-white/60">Email</Label>
                   <Input 
+                    ref={emailRef}
                     id="email"
+                    name="email"
                     type="email"
                     placeholder="john@example.com" 
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="bg-transparent border-white/10 focus:border-white h-12 text-lg transition-all duration-200" 
                     required
                   />
@@ -193,10 +214,10 @@ export default function ContactPage() {
               >
                 <Label htmlFor="message" className="text-white/60">Message</Label>
                 <Textarea 
+                  ref={messageRef}
                   id="message"
+                  name="message"
                   placeholder="Tell us about your project..." 
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="bg-transparent border-white/10 focus:border-white min-h-[200px] text-lg resize-none transition-all duration-200" 
                   required
                 />

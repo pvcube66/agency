@@ -9,6 +9,8 @@ interface SmoothScrollProviderProps {
 
 export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const lenisRef = useRef<Lenis | null>(null);
+  const rafIdRef = useRef<number | null>(null);
+  const isActiveRef = useRef(true);
 
   useEffect(() => {
     // Check for reduced motion preference
@@ -33,13 +35,33 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     });
 
     function raf(time: number) {
+      if (!isActiveRef.current) return;
       lenisRef.current?.raf(time);
-      requestAnimationFrame(raf);
+      rafIdRef.current = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    // Handle visibility change to pause RAF in background tabs
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        isActiveRef.current = false;
+        if (rafIdRef.current) {
+          cancelAnimationFrame(rafIdRef.current);
+          rafIdRef.current = null;
+        }
+      } else {
+        isActiveRef.current = true;
+        rafIdRef.current = requestAnimationFrame(raf);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    rafIdRef.current = requestAnimationFrame(raf);
 
     return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
       lenisRef.current?.destroy();
     };
   }, []);

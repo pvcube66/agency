@@ -1,7 +1,8 @@
+import { memo } from "react"
 import Link from "next/link"
 import { Instagram, Twitter, Linkedin } from "lucide-react"
 
-export function Footer() {
+export const Footer = memo(function Footer() {
   return (
     <footer className="bg-black border-t border-white/10 py-12 sm:py-16 md:py-20">
       <div className="container mx-auto px-4 sm:px-6">
@@ -76,4 +77,4 @@ export function Footer() {
       </div>
     </footer>
   )
-}
+})

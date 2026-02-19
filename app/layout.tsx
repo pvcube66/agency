@@ -1,7 +1,24 @@
 import type { Metadata, Viewport } from "next";
+import { Manrope, Playfair_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+  weight: ["400", "600", "700"],
+  style: ["normal", "italic"],
+});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -11,6 +28,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://devmama.dev"),
   title: "Dev Mama - Digital Agency | High-End Web Design & Development",
   description: "We are a digital agency specializing in high-end design and development for brands that refuse to blend in. Crafting lasting impressions through modern web experiences.",
   keywords: ["web design", "web development", "digital agency", "react", "next.js", "frontend", "UI/UX"],
@@ -63,21 +81,62 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${manrope.variable} ${playfair.variable}`}>
       <head>
+        {/* Preconnect to external domains for faster resource loading */}
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="preconnect" href="https://i.pinimg.com" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://i.pinimg.com" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        
+        {/* Preload critical above-fold images */}
+        <link 
+          rel="preload" 
+          as="image" 
+          href="https://res.cloudinary.com/dhvljfjkd/image/upload/v1771436561/landingagency-poster.jpg"
+          type="image/jpeg"
+        />
+        
+        {/* Preload critical fonts */}
+        <link 
+          rel="preload" 
+          href={`${manrope.variable}`}
+          as="font" 
+          type="font/woff2" 
+          crossOrigin="anonymous" 
+        />
+        <link 
+          rel="preload" 
+          href={`${playfair.variable}`}
+          as="font" 
+          type="font/woff2" 
+          crossOrigin="anonymous" 
+        />
       </head>
       <body className="min-h-screen bg-background antialiased">
         <SmoothScrollProvider>
           {children}
         </SmoothScrollProvider>
         <Toaster />
+        <Analytics />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                      console.log('SW registered: ', registration);
+                    })
+                    .catch((error) => {
+                      console.log('SW registration failed: ', error);
+                    });
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );
