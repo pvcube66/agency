@@ -116,15 +116,6 @@ const nextConfig = {
           },
         ],
       },
-      {
-        source: '/',
-        headers: [
-          {
-            key: 'Link',
-            value: '<https://fonts.gstatic.com/s/manrope/v15/xn7gYHE41ni1AdIRggexSg.woff2>; rel=preload; as=font; crossorigin=anonymous, <https://fonts.gstatic.com/s/playfairdisplay/v36/nuFiD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_qiTbtbK-F2rA0s.woff2>; rel=preload; as=font; crossorigin=anonymous',
-          },
-        ],
-      },
     ];
   },
 }

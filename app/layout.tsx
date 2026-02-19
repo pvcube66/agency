@@ -5,6 +5,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 import { LoadingProvider } from "@/components/LoadingProvider";
+import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -107,23 +108,7 @@ export default function RootLayout({
         </LoadingProvider>
         <Toaster />
         <Analytics />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                  navigator.serviceWorker.register('/sw.js')
-                    .then((registration) => {
-                      console.log('SW registered: ', registration);
-                    })
-                    .catch((error) => {
-                      console.log('SW registration failed: ', error);
-                    });
-                });
-              }
-            `,
-          }}
-        />
+        <ServiceWorkerRegistration />
       </body>
     </html>
   );

@@ -52,6 +52,8 @@ export function Navigation() {
 
   // Optimized scroll handler using CSS custom properties instead of React state for styles
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     let ticking = false
     
     const handleScroll = () => {
@@ -70,6 +72,8 @@ export function Navigation() {
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
+    if (typeof document === 'undefined') return
+    
     if (isMobileOpen) {
       document.body.style.overflow = 'hidden'
     } else {

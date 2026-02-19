@@ -69,10 +69,6 @@ export const Footer = memo(function Footer() {
 
         <div className="flex flex-col sm:flex-row justify-between items-center pt-6 sm:pt-8 border-t border-white/10 text-white/40 text-xs sm:text-sm gap-4 sm:gap-0">
           <p className="text-center sm:text-left">&copy; 2026 Dev Mama. All rights reserved.</p>
-          <div className="flex gap-4 sm:gap-6">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-          </div>
         </div>
       </div>
     </footer>

@@ -70,6 +70,8 @@ export function useReducedMotion() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
 
@@ -124,6 +126,8 @@ export function useScrollProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+    
     let rafId: number;
     let lastScrollY = 0;
 
@@ -162,7 +166,7 @@ export function useRAF(callback: (time: number) => void, active: boolean = true)
   }, [callback]);
 
   useEffect(() => {
-    if (!active) return;
+    if (!active || typeof window === 'undefined') return;
 
     let lastTime = 0;
     const animate = (time: number) => {
@@ -190,6 +194,8 @@ export function useLazyLoad<T extends HTMLElement>() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const element = ref.current;
     if (!element) return;
 

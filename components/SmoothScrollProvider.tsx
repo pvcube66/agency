@@ -13,6 +13,8 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const isActiveRef = useRef(true);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+    
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
