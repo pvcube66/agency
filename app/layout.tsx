@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
+import { LoadingProvider } from "@/components/LoadingProvider";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -115,9 +116,11 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-background antialiased">
-        <SmoothScrollProvider>
-          {children}
-        </SmoothScrollProvider>
+        <LoadingProvider>
+          <SmoothScrollProvider>
+            {children}
+          </SmoothScrollProvider>
+        </LoadingProvider>
         <Toaster />
         <Analytics />
         <script
