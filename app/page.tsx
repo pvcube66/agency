@@ -20,6 +20,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
+// Static data - defined outside component to prevent recreating on every render
+const approachSteps = [
+  { title: "Discovery First", desc: "Understanding your vision, goals, and market positioning." },
+  { title: "Mobile-First Design", desc: "Ensuring a seamless experience across all modern devices." },
+  { title: "Pixel-Perfect Development", desc: "Clean, performant code that brings designs to life." },
+]
+
 // Optimized section wrapper with Framer Motion
 function AnimatedSection({ 
   children, 
@@ -245,11 +252,7 @@ export default function Home() {
                 We don&apos;t just build websites; we create digital identities that resonate with your audience and drive measurable results.
               </p>
               <div className="space-y-4 sm:space-y-6">
-                {[
-                  { title: "Discovery First", desc: "Understanding your vision, goals, and market positioning." },
-                  { title: "Mobile-First Design", desc: "Ensuring a seamless experience across all modern devices." },
-                  { title: "Pixel-Perfect Development", desc: "Clean, performant code that brings designs to life." },
-                ].map((step, idx) => (
+                {approachSteps.map((step, idx) => (
                   <motion.div 
                     key={idx} 
                     className="flex gap-4 sm:gap-6 items-start"

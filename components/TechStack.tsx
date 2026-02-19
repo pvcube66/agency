@@ -133,53 +133,45 @@ const TechIcon = memo(function TechIcon({ name }: { name: string }) {
   )
 })
 
-// Optimized Starfield with Framer Motion - 20 stars instead of 60
-function Starfield() {
-  // Pre-calculated positions for 20 stars
-  const stars = [
-    { id: 1, x: 10, y: 15, size: 2, delay: 0, duration: 3 },
-    { id: 2, x: 25, y: 35, size: 1.5, delay: 0.5, duration: 2.5 },
-    { id: 3, x: 40, y: 10, size: 2.5, delay: 1, duration: 3.5 },
-    { id: 4, x: 55, y: 45, size: 1.5, delay: 1.5, duration: 2.8 },
-    { id: 5, x: 70, y: 20, size: 2, delay: 0.3, duration: 3.2 },
-    { id: 6, x: 85, y: 55, size: 1.5, delay: 0.8, duration: 2.6 },
-    { id: 7, x: 15, y: 65, size: 2, delay: 1.2, duration: 3.1 },
-    { id: 8, x: 35, y: 80, size: 1.5, delay: 0.2, duration: 2.9 },
-    { id: 9, x: 60, y: 70, size: 2.5, delay: 1.7, duration: 3.3 },
-    { id: 10, x: 80, y: 85, size: 1.5, delay: 0.6, duration: 2.7 },
-    { id: 11, x: 45, y: 25, size: 2, delay: 1.1, duration: 3 },
-    { id: 12, x: 20, y: 50, size: 1.5, delay: 0.4, duration: 2.8 },
-    { id: 13, x: 75, y: 40, size: 2, delay: 1.4, duration: 3.2 },
-    { id: 14, x: 50, y: 60, size: 1.5, delay: 0.9, duration: 2.5 },
-    { id: 15, x: 90, y: 30, size: 2.5, delay: 1.3, duration: 3.4 },
-    { id: 16, x: 5, y: 75, size: 1.5, delay: 0.7, duration: 2.6 },
-    { id: 17, x: 65, y: 5, size: 2, delay: 1.8, duration: 3 },
-    { id: 18, x: 30, y: 90, size: 1.5, delay: 0.1, duration: 2.9 },
-    { id: 19, x: 95, y: 70, size: 2, delay: 1.6, duration: 3.1 },
-    { id: 20, x: 12, y: 30, size: 1.5, delay: 0.95, duration: 2.7 },
-  ]
+// Static star data - defined outside component to prevent recreating on every render
+const stars = [
+  { id: 1, x: 10, y: 15, size: 2, delay: 0, duration: 3 },
+  { id: 2, x: 25, y: 35, size: 1.5, delay: 0.5, duration: 2.5 },
+  { id: 3, x: 40, y: 10, size: 2.5, delay: 1, duration: 3.5 },
+  { id: 4, x: 55, y: 45, size: 1.5, delay: 1.5, duration: 2.8 },
+  { id: 5, x: 70, y: 20, size: 2, delay: 0.3, duration: 3.2 },
+  { id: 6, x: 85, y: 55, size: 1.5, delay: 0.8, duration: 2.6 },
+  { id: 7, x: 15, y: 65, size: 2, delay: 1.2, duration: 3.1 },
+  { id: 8, x: 35, y: 80, size: 1.5, delay: 0.2, duration: 2.9 },
+  { id: 9, x: 60, y: 70, size: 2.5, delay: 1.7, duration: 3.3 },
+  { id: 10, x: 80, y: 85, size: 1.5, delay: 0.6, duration: 2.7 },
+  { id: 11, x: 45, y: 25, size: 2, delay: 1.1, duration: 3 },
+  { id: 12, x: 20, y: 50, size: 1.5, delay: 0.4, duration: 2.8 },
+  { id: 13, x: 75, y: 40, size: 2, delay: 1.4, duration: 3.2 },
+  { id: 14, x: 50, y: 60, size: 1.5, delay: 0.9, duration: 2.5 },
+  { id: 15, x: 90, y: 30, size: 2.5, delay: 1.3, duration: 3.4 },
+  { id: 16, x: 5, y: 75, size: 1.5, delay: 0.7, duration: 2.6 },
+  { id: 17, x: 65, y: 5, size: 2, delay: 1.8, duration: 3 },
+  { id: 18, x: 30, y: 90, size: 1.5, delay: 0.1, duration: 2.9 },
+  { id: 19, x: 95, y: 70, size: 2, delay: 1.6, duration: 3.1 },
+  { id: 20, x: 12, y: 30, size: 1.5, delay: 0.95, duration: 2.7 },
+]
 
+// Optimized Starfield with CSS animations - 20 stars using GPU-accelerated CSS
+function Starfield() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {stars.map((star) => (
-        <motion.div
+        <div
           key={star.id}
-          className="absolute rounded-full bg-white will-change-transform"
+          className="absolute rounded-full bg-white animate-twinkle"
           style={{
             left: `${star.x}%`,
             top: `${star.y}%`,
             width: star.size,
             height: star.size,
-          }}
-          animate={{
-            opacity: [0.2, 1, 0.2],
-            scale: [1, 1.3, 1],
-          }}
-          transition={{
-            duration: star.duration,
-            delay: star.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
+            animationDelay: `${star.delay}s`,
+            animationDuration: `${star.duration}s`,
           }}
         />
       ))}
@@ -262,22 +254,24 @@ function TypewriterText({ text, speed = 50, delay = 0 }: { text: string; speed?:
       return
     }
 
+    let interval: NodeJS.Timeout | null = null
     const startTimeout = setTimeout(() => {
       let index = 0
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         if (index <= text.length) {
           setDisplayText(text.slice(0, index))
           index++
         } else {
           setIsComplete(true)
-          clearInterval(interval)
+          if (interval) clearInterval(interval)
         }
       }, speed)
-
-      return () => clearInterval(interval)
     }, delay)
 
-    return () => clearTimeout(startTimeout)
+    return () => {
+      clearTimeout(startTimeout)
+      if (interval) clearInterval(interval)
+    }
   }, [isInView, text, speed, delay, prefersReducedMotion])
 
   return (

@@ -162,7 +162,6 @@ export default function ContactPage() {
               >
                 <motion.div 
                   className="space-y-2"
-                  whileFocus={{ scale: prefersReducedMotion ? 1 : 1.01 }}
                 >
                   <Label htmlFor="name" className="text-white/60">Name</Label>
                   <Input 

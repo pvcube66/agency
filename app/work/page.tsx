@@ -1,11 +1,19 @@
 "use client"
 
 import { motion, useInView, useReducedMotion } from "framer-motion"
-import { useRef } from "react"
+import { useRef, useMemo } from "react"
 import { Navigation } from "@/components/Navigation"
 import { Footer } from "@/components/Footer"
 import { ProjectCard } from "@/components/ProjectCard"
 import { projects } from "@/data"
+
+// Static data - defined outside component to prevent recreating on every render
+const stats = [
+  { number: "16+", label: "Projects Completed" },
+  { number: "100%", label: "Client Satisfaction" },
+  { number: "24/7", label: "Support Available" },
+  { number: "5★", label: "Average Rating" },
+]
 
 // Stats component with animation
 function StatItem({ stat, index }: { stat: { number: string; label: string }; index: number }) {
@@ -50,6 +58,10 @@ export default function WorkPage() {
   const headerRef = useRef(null)
   const isHeaderInView = useInView(headerRef, { once: true })
   const prefersReducedMotion = useReducedMotion()
+
+  // Memoize filtered projects to prevent recalculating on every render
+  const featuredProjects = useMemo(() => projects.filter(p => p.highlighted), [])
+  const otherProjects = useMemo(() => projects.filter(p => !p.highlighted), [])
 
   return (
     <div className="bg-background min-h-screen text-foreground selection:bg-white/20">
@@ -100,11 +112,9 @@ export default function WorkPage() {
               Featured Projects
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {projects
-                .filter(p => p.highlighted)
-                .map((project, idx) => (
-                  <ProjectCard key={project.id} project={project} index={idx} highlighted={true} />
-                ))}
+              {featuredProjects.map((project, idx) => (
+                <ProjectCard key={project.id} project={project} index={idx} highlighted={true} />
+              ))}
             </div>
           </motion.div>
 
@@ -124,11 +134,9 @@ export default function WorkPage() {
               All Projects
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {projects
-                .filter(p => !p.highlighted)
-                .map((project, idx) => (
-                  <ProjectCard key={project.id} project={project} index={idx} />
-                ))}
+              {otherProjects.map((project, idx) => (
+                <ProjectCard key={project.id} project={project} index={idx} />
+              ))}
             </div>
           </motion.div>
 
@@ -140,12 +148,7 @@ export default function WorkPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            {[
-              { number: "16+", label: "Projects Completed" },
-              { number: "100%", label: "Client Satisfaction" },
-              { number: "24/7", label: "Support Available" },
-              { number: "5★", label: "Average Rating" },
-            ].map((stat, idx) => (
+            {stats.map((stat, idx) => (
               <StatItem key={idx} stat={stat} index={idx} />
             ))}
           </motion.div>

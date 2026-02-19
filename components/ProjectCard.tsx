@@ -5,7 +5,7 @@ import type { Project } from "@/data"
 import { ArrowUpRight, ExternalLink } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { useState, useRef } from "react"
+import { useState, useRef, memo } from "react"
 
 interface ProjectCardProps {
   project: Project
@@ -13,7 +13,7 @@ interface ProjectCardProps {
   highlighted?: boolean
 }
 
-export function ProjectCard({ project, index, highlighted = false }: ProjectCardProps) {
+export const ProjectCard = memo(function ProjectCard({ project, index, highlighted = false }: ProjectCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const cardRef = useRef(null)
   const isInView = useInView(cardRef, { once: true, margin: "-50px" })
@@ -74,18 +74,24 @@ export function ProjectCard({ project, index, highlighted = false }: ProjectCard
             </motion.div>
           )}
           
-          <Image
-            src={project.image}
-            alt={project.alt || project.name}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className={`object-cover transition-opacity duration-500 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            onLoad={() => setImageLoaded(true)}
-            loading={index < 3 ? "eager" : "lazy"}
-            quality={80}
-          />
+          <motion.div
+            className="absolute inset-0"
+            whileHover={{ scale: prefersReducedMotion ? 1 : 1.08 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Image
+              src={project.image}
+              alt={project.alt || project.name}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className={`object-cover transition-opacity duration-500 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoad={() => setImageLoaded(true)}
+              loading={index < 3 ? "eager" : "lazy"}
+              quality={80}
+            />
+          </motion.div>
           
           {/* Hover Overlay Button */}
           <motion.div 
@@ -101,22 +107,6 @@ export function ProjectCard({ project, index, highlighted = false }: ProjectCard
             >
               <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
             </motion.div>
-          </motion.div>
-          
-          {/* Image scale on hover */}
-          <motion.div
-            className="absolute inset-0"
-            whileHover={{ scale: 1.08 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Image
-              src={project.image}
-              alt=""
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover opacity-0"
-              aria-hidden="true"
-            />
           </motion.div>
         </motion.div>
 
@@ -153,4 +143,4 @@ export function ProjectCard({ project, index, highlighted = false }: ProjectCard
       </Link>
     </motion.div>
   )
-}
+})

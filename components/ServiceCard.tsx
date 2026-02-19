@@ -3,14 +3,14 @@
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import * as Icons from "lucide-react"
 import type { Service } from "@/data"
-import { useRef } from "react"
+import { useRef, memo } from "react"
 
 interface ServiceCardProps {
   service: Service;
   index: number;
 }
 
-export function ServiceCard({ service, index }: ServiceCardProps) {
+export const ServiceCard = memo(function ServiceCard({ service, index }: ServiceCardProps) {
   const Icon = (Icons[service.icon as keyof typeof Icons] as React.ComponentType<{ size?: number; strokeWidth?: number }>) || Icons.Layout
   const cardRef = useRef(null)
   const isInView = useInView(cardRef, { once: true, margin: "-30px" })
@@ -72,4 +72,4 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
       </motion.p>
     </motion.div>
   )
-}
+})
