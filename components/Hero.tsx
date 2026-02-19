@@ -12,10 +12,18 @@ export function Hero() {
   const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
+    if (typeof window === 'undefined') return
+    
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+    
     checkMobile()
     window.addEventListener("resize", checkMobile, { passive: true })
-    return () => window.removeEventListener("resize", checkMobile)
+    
+    return () => {
+      window.removeEventListener("resize", checkMobile)
+    }
   }, [])
 
   // Delay video loading slightly to prioritize critical content
@@ -46,6 +54,85 @@ export function Hero() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
       />
+
+      {/* Mobile Animated Background - Floating gradient orbs */}
+      {isMobile && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none lg:hidden">
+          {/* Large cyan orb */}
+          <motion.div
+            className="absolute w-64 h-64 rounded-full bg-cyan-500/20 blur-3xl"
+            style={{ left: '-10%', top: '20%' }}
+            animate={{
+              x: [0, 50, 0],
+              y: [0, -30, 0],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          {/* Purple orb */}
+          <motion.div
+            className="absolute w-48 h-48 rounded-full bg-purple-500/20 blur-3xl"
+            style={{ right: '-5%', top: '40%' }}
+            animate={{
+              x: [0, -40, 0],
+              y: [0, 40, 0],
+              scale: [1, 1.3, 1],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          {/* Pink orb */}
+          <motion.div
+            className="absolute w-56 h-56 rounded-full bg-pink-500/15 blur-3xl"
+            style={{ left: '20%', bottom: '10%' }}
+            animate={{
+              x: [0, 30, 0],
+              y: [0, -50, 0],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          {/* Floating geometric shapes */}
+          <motion.div
+            className="absolute w-24 h-24 border border-white/10 rotate-45"
+            style={{ right: '15%', top: '15%' }}
+            animate={{
+              rotate: [45, 135, 45],
+              scale: [1, 1.1, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className="absolute w-16 h-16 border border-cyan-500/20 rounded-full"
+            style={{ left: '10%', bottom: '25%' }}
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.2, 0.5, 0.2],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        </div>
+      )}
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
